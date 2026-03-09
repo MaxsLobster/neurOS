@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">neurOS social preview</title>
+  <desc id="desc">neurOS landing page preview card with dark gradient background and headline.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1B2E" />
+      <stop offset="50%" stop-color="#2D1B69" />
+      <stop offset="100%" stop-color="#1A1B2E" />
+    </linearGradient>
+    <radialGradient id="cyanGlow" cx="25%" cy="20%" r="40%">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="pinkGlow" cx="80%" cy="25%" r="35%">
+      <stop offset="0%" stop-color="#FF6B9D" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#FF6B9D" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#cyanGlow)" />
+  <rect width="1200" height="630" fill="url(#pinkGlow)" />
+  <circle cx="910" cy="170" r="110" fill="#8B5CF6" opacity="0.18" />
+  <circle cx="290" cy="480" r="90" fill="#00D4FF" opacity="0.12" />
+  <text x="84" y="128" fill="#00D4FF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="5">
+    neurOS
+  </text>
+  <text x="84" y="258" fill="#F5F5F7" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="74" font-weight="800">
+    <tspan x="84" dy="0">Ein freundlicheres Betriebssystem</tspan>
+    <tspan x="84" dy="88">für ADHS-Gehirne.</tspan>
+  </text>
+  <text x="84" y="430" fill="#9CA3AF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="32" font-weight="500">
+    <tspan x="84" dy="0">App. Tools. Community. Wissen.</tspan>
+    <tspan x="84" dy="44">Gebaut von jemandem der es selbst braucht.</tspan>
+  </text>
+  <rect x="84" y="506" width="310" height="66" rx="33" fill="#8B5CF6" />
+  <text x="118" y="549" fill="#F5F5F7" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">
+    Auf die Warteliste →
+  </text>
+</svg>
