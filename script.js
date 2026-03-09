@@ -68,24 +68,28 @@ const texts = {
     toolResultCta: "Auf die Warteliste →",
     toolRestart: "Nochmal machen ↺",
     brainKicker: "Micro-Tool",
+    brainConsoleLabel: "Gedanken-Konsole",
     brainTitle: "Alles raus aus dem Kopf.",
     brainCopy:
-      "Schreib alles auf was dich gerade beschäftigt. Wir sortieren es für dich. Kein Account. Nichts wird gespeichert.",
+      "Schreib ungefiltert auf, was gerade in deinem Kopf herumfliegt. neurOS bringt Ordnung rein.",
     brainInputLabel: "Was geht dir gerade durch den Kopf?",
     brainPlaceholder:
-      "Was geht dir gerade durch den Kopf? Einfach losschreiben... Jeder Gedanke in eine neue Zeile.",
-    brainSort: "Sortieren →",
-    brainSorting: "⚡ neurOS sortiert Gedanken...",
-    brainFollowup:
-      "Sieht schon sortierter aus, oder? In der neurOS-App macht das eine KI — noch genauer, noch schneller.",
+      "Zum Beispiel:\nIch weiß nicht womit ich anfangen soll\nich denke an 7 Sachen gleichzeitig\neigentlich müsste ich 2 Mails schreiben\nund ich habe noch diese eine Idee…",
+    brainSort: "Gedanken sortieren",
+    brainSorting: "neurOS entwirrt dein Gedankenknäuel…",
     brainCta: "Auf die Warteliste →",
     brainRestart: "Nochmal machen ↺",
     brainEmpty: "Schreib erst ein paar Gedanken auf. Eine Zeile reicht schon für den Anfang.",
     brainCategories: {
-      thoughts: "🧠 Gedanken",
-      tasks: "✅ Aufgaben",
-      ideas: "💡 Ideen",
-      worries: "⚠ Sorgen",
+      now: "⚡ Jetzt wichtig",
+      later: "💡 Parken für später",
+      noise: "🌫️ Kopfrauschen",
+    },
+    brainSummaries: {
+      focus_one: "Okay. Das meiste ist nicht dringend. Fang mit 1 Sache an.",
+      noise_first: "Gerade ist viel Lautstärke im Kopf. Mach es kleiner. Erst 1 ruhigen nächsten Schritt.",
+      parking_lot: "Da ist viel, aber nicht alles will heute Aufmerksamkeit. Parken ist auch Fortschritt.",
+      balanced: "Jetzt ist es klarer. Erst handeln, dann den Rest bewusst liegen lassen.",
     },
     appKicker: "Ein Blick in die App",
     appTitle: "So fühlt sich neurOS an.",
@@ -348,24 +352,28 @@ const texts = {
     toolResultCta: "Join the waitlist →",
     toolRestart: "Try again ↺",
     brainKicker: "Micro-Tool",
+    brainConsoleLabel: "Thought Console",
     brainTitle: "Get everything out of your head.",
     brainCopy:
-      "Write down everything on your mind. We'll sort it for you. No account. Nothing is saved.",
+      "Write down, unfiltered, what is flying around in your head. neurOS brings some order into it.",
     brainInputLabel: "What's going through your head right now?",
     brainPlaceholder:
-      "What's going through your head right now? Just start writing... Each thought on a new line.",
-    brainSort: "Sort →",
-    brainSorting: "⚡ neurOS is sorting thoughts...",
-    brainFollowup:
-      "Looks more sorted already, right? In the neurOS app, AI does this — even more accurately, even faster.",
+      "For example:\nI don't know what to start with\nI'm thinking about 7 things at once\nI really need to write 2 emails\nand I still have that one idea…",
+    brainSort: "Sort thoughts",
+    brainSorting: "neurOS is untangling the noise in your head…",
     brainCta: "Join the waitlist →",
     brainRestart: "Try again ↺",
     brainEmpty: "Write down a few thoughts first. One line is enough to start.",
     brainCategories: {
-      thoughts: "🧠 Thoughts",
-      tasks: "✅ Tasks",
-      ideas: "💡 Ideas",
-      worries: "⚠ Worries",
+      now: "⚡ Now important",
+      later: "💡 Park for later",
+      noise: "🌫️ Head noise",
+    },
+    brainSummaries: {
+      focus_one: "Okay. Most of this is not urgent. Start with one thing.",
+      noise_first: "There is a lot of noise in your head right now. Make it smaller. Find one calm next step.",
+      parking_lot: "There is a lot here, but not all of it needs you today. Parking things is progress too.",
+      balanced: "This is clearer now. Act on one thing, and let the rest stay parked on purpose.",
     },
     appKicker: "A look inside the app",
     appTitle: "This is what neurOS feels like.",
@@ -637,6 +645,7 @@ let statsObserver;
 let parallaxNodes = [];
 let parallaxEnabled = false;
 let parallaxTicking = false;
+let scrollEnergyTimeout;
 
 const elements = {
   heroEyebrow: document.getElementById("hero-eyebrow"),
@@ -669,6 +678,7 @@ const elements = {
   toolResultCta: document.getElementById("tool-result-cta"),
   toolRestart: document.getElementById("tool-restart"),
   brainKicker: document.getElementById("brain-kicker"),
+  brainConsoleLabel: document.getElementById("brain-console-label"),
   brainTitle: document.getElementById("brain-title"),
   brainCopy: document.getElementById("brain-copy"),
   brainInputLabel: document.getElementById("brain-input-label"),
@@ -819,13 +829,14 @@ function renderStaticContent() {
   elements.toolResultCta.textContent = copy.toolResultCta;
   elements.toolRestart.textContent = copy.toolRestart;
   elements.brainKicker.textContent = copy.brainKicker;
+  elements.brainConsoleLabel.textContent = copy.brainConsoleLabel;
   elements.brainTitle.textContent = copy.brainTitle;
   elements.brainCopy.textContent = copy.brainCopy;
   elements.brainInputLabel.textContent = copy.brainInputLabel;
   elements.brainInput.placeholder = copy.brainPlaceholder;
   elements.brainSortLabel.textContent = copy.brainSort;
   elements.brainStatusText.textContent = copy.brainSorting;
-  elements.brainFollowup.textContent = copy.brainFollowup;
+  elements.brainFollowup.textContent = getBrainSummary(copy);
   elements.brainCta.textContent = copy.brainCta;
   elements.brainRestart.textContent = copy.brainRestart;
   elements.appKicker.textContent = copy.appKicker;
@@ -916,14 +927,14 @@ function renderBrainDump() {
     return;
   }
 
-  const categories = ["thoughts", "tasks", "ideas", "worries"];
+  const categories = ["now", "later", "noise"];
   const visibleCards = categories.filter((key) => state.brainDumpBuckets[key].length > 0);
 
   elements.brainGrid.innerHTML = visibleCards
     .map((key, index) => {
       const items = state.brainDumpBuckets[key];
       return `
-        <article class="feature-card brain-dump-card" style="animation-delay:${index * 100}ms">
+        <article class="feature-card brain-dump-card${key === "now" ? " brain-dump-card-primary" : ""}" style="animation-delay:${index * 120}ms">
           <h3 class="brain-dump-card-title">${copy.brainCategories[key]} (${items.length})</h3>
           <ul class="brain-dump-list">
             ${items.map((item) => `<li>${item}</li>`).join("")}
@@ -932,6 +943,8 @@ function renderBrainDump() {
       `;
     })
     .join("");
+
+  elements.brainFollowup.textContent = getBrainSummary(copy);
 }
 
 function renderAppPreview() {
@@ -1188,6 +1201,30 @@ function formatAnimatedStat(value, format) {
   return String(Math.max(0, Math.round(value)));
 }
 
+function getBrainSummary(copy) {
+  if (!state.brainDumpBuckets) {
+    return copy.brainSummaries.focus_one;
+  }
+
+  const nowCount = state.brainDumpBuckets.now.length;
+  const laterCount = state.brainDumpBuckets.later.length;
+  const noiseCount = state.brainDumpBuckets.noise.length;
+
+  if (noiseCount >= nowCount + laterCount) {
+    return copy.brainSummaries.noise_first;
+  }
+
+  if (laterCount > nowCount && nowCount === 0) {
+    return copy.brainSummaries.parking_lot;
+  }
+
+  if (nowCount <= 1) {
+    return copy.brainSummaries.focus_one;
+  }
+
+  return copy.brainSummaries.balanced;
+}
+
 function sortBrainDumpLines(lines) {
   return lines.reduce(
     (buckets, line) => {
@@ -1197,25 +1234,30 @@ function sortBrainDumpLines(lines) {
         return buckets;
       }
 
-      if (brainDumpMatchers.idea.test(normalized)) {
-        buckets.ideas.push(line.trim());
+      if (brainDumpMatchers.startsWithVerb.test(normalized) || brainDumpMatchers.task.test(normalized)) {
+        buckets.now.push(line.trim());
         return buckets;
       }
 
       if (brainDumpMatchers.worry.test(normalized)) {
-        buckets.worries.push(line.trim());
+        buckets.noise.push(line.trim());
         return buckets;
       }
 
-      if (brainDumpMatchers.startsWithVerb.test(normalized) || brainDumpMatchers.task.test(normalized)) {
-        buckets.tasks.push(line.trim());
+      if (brainDumpMatchers.idea.test(normalized)) {
+        buckets.later.push(line.trim());
         return buckets;
       }
 
-      buckets.thoughts.push(line.trim());
+      if (/(\?|ich weiß nicht|ich weiss nicht|too much|zu viel|gleichzeitig|overwhelmed?|chaos)/i.test(normalized)) {
+        buckets.noise.push(line.trim());
+        return buckets;
+      }
+
+      buckets.later.push(line.trim());
       return buckets;
     },
-    { thoughts: [], tasks: [], ideas: [], worries: [] },
+    { now: [], later: [], noise: [] },
   );
 }
 
@@ -1251,7 +1293,7 @@ function runBrainDump() {
     state.brainDumpMode = "result";
     state.brainDumpTimer = null;
     renderBrainDump();
-  }, 800);
+  }, 1000);
 }
 
 function resetBrainDump() {
@@ -1275,6 +1317,7 @@ function setupParallax() {
   parallaxNodes = Array.from(document.querySelectorAll("[data-parallax]"));
   updateParallaxMode();
   window.addEventListener("scroll", requestParallaxFrame, { passive: true });
+  window.addEventListener("scroll", triggerScrollEnergy, { passive: true });
   window.addEventListener("resize", updateParallaxMode);
 }
 
@@ -1317,6 +1360,22 @@ function requestParallaxFrame() {
 
     parallaxTicking = false;
   });
+}
+
+function triggerScrollEnergy() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  document.body.classList.add("is-scrolling");
+  if (scrollEnergyTimeout) {
+    window.clearTimeout(scrollEnergyTimeout);
+  }
+
+  scrollEnergyTimeout = window.setTimeout(() => {
+    document.body.classList.remove("is-scrolling");
+    scrollEnergyTimeout = null;
+  }, 220);
 }
 
 function setupRevealObserver() {
