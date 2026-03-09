@@ -74,10 +74,15 @@
         <span class="parallax-decor parallax-decor-cyan" data-parallax="0.18"></span>
         <span class="parallax-decor parallax-decor-purple" data-parallax="0.24"></span>
         <span class="parallax-decor parallax-decor-pink" data-parallax="0.14"></span>
+        <span class="neural-line neural-line-cyan neural-line-a" data-parallax="0.1"></span>
+        <span class="neural-line neural-line-purple neural-line-b" data-parallax="0.13"></span>
+        <span class="neural-line neural-line-cyan neural-line-c" data-parallax="0.09"></span>
+        <span class="neural-line neural-line-purple neural-line-d" data-parallax="0.11"></span>
         <span class="spark-light spark-ambient spark-a" data-parallax="0.12"></span>
         <span class="spark-light spark-ambient spark-b" data-parallax="0.09"></span>
         <span class="spark-light spark-ambient spark-c" data-parallax="0.15"></span>
         <span class="spark-light spark-ambient spark-d" data-parallax="0.1"></span>
+        <span class="spark-light spark-ambient spark-e" data-parallax="0.07"></span>
       </div>
 
       <main id="main-content">
@@ -86,6 +91,8 @@
             <span class="orb orb-cyan" data-parallax="0.16"></span>
             <span class="orb orb-purple" data-parallax="0.22"></span>
             <span class="orb orb-pink" data-parallax="0.12"></span>
+            <span class="neural-line neural-line-cyan neural-line-hero-a" data-parallax="0.06"></span>
+            <span class="neural-line neural-line-purple neural-line-hero-b" data-parallax="0.08"></span>
             <span class="spark-light spark-hero" data-parallax="0.08"></span>
             <span class="spark-light spark-hero-secondary" data-parallax="0.05"></span>
           </div>
@@ -189,12 +196,18 @@
                 Was geht dir gerade durch den Kopf?
               </label>
               <textarea
-                class="field-input brain-dump-textarea"
+                class="field-input brain-dump-textarea brain-dump-console"
                 id="brain-input"
                 rows="8"
                 placeholder="Was geht dir gerade durch den Kopf? Einfach losschreiben... Jeder Gedanke in eine neue Zeile."
               ></textarea>
-              <button class="button button-primary" type="button" id="brain-sort">Sortieren →</button>
+              <button class="button button-primary brain-sort-button" type="button" id="brain-sort">
+                <span id="brain-sort-label">Sortieren →</span>
+              </button>
+            </div>
+
+            <div class="brain-dump-status" id="brain-status" hidden>
+              <p class="brain-dump-status-text" id="brain-status-text">⚡ neurOS sortiert Gedanken...</p>
             </div>
 
             <div class="brain-dump-result" id="brain-result" hidden>

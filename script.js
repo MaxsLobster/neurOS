@@ -75,16 +75,17 @@ const texts = {
     brainPlaceholder:
       "Was geht dir gerade durch den Kopf? Einfach losschreiben... Jeder Gedanke in eine neue Zeile.",
     brainSort: "Sortieren →",
+    brainSorting: "⚡ neurOS sortiert Gedanken...",
     brainFollowup:
       "Sieht schon sortierter aus, oder? In der neurOS-App macht das eine KI — noch genauer, noch schneller.",
     brainCta: "Auf die Warteliste →",
     brainRestart: "Nochmal machen ↺",
     brainEmpty: "Schreib erst ein paar Gedanken auf. Eine Zeile reicht schon für den Anfang.",
     brainCategories: {
-      tasks: "🎯 Tasks",
+      thoughts: "🧠 Gedanken",
+      tasks: "✅ Aufgaben",
       ideas: "💡 Ideen",
-      worries: "🌧️ Sorgen",
-      notes: "📝 Notizen",
+      worries: "⚠ Sorgen",
     },
     appKicker: "Ein Blick in die App",
     appTitle: "So fühlt sich neurOS an.",
@@ -354,16 +355,17 @@ const texts = {
     brainPlaceholder:
       "What's going through your head right now? Just start writing... Each thought on a new line.",
     brainSort: "Sort →",
+    brainSorting: "⚡ neurOS is sorting thoughts...",
     brainFollowup:
       "Looks more sorted already, right? In the neurOS app, AI does this — even more accurately, even faster.",
     brainCta: "Join the waitlist →",
     brainRestart: "Try again ↺",
     brainEmpty: "Write down a few thoughts first. One line is enough to start.",
     brainCategories: {
-      tasks: "🎯 Tasks",
+      thoughts: "🧠 Thoughts",
+      tasks: "✅ Tasks",
       ideas: "💡 Ideas",
-      worries: "🌧️ Worries",
-      notes: "📝 Notes",
+      worries: "⚠ Worries",
     },
     appKicker: "A look inside the app",
     appTitle: "This is what neurOS feels like.",
@@ -626,6 +628,7 @@ const state = {
   statsAnimated: false,
   brainDumpMode: "input",
   brainDumpBuckets: null,
+  brainDumpTimer: null,
   faqOpen: 0,
 };
 
@@ -671,7 +674,10 @@ const elements = {
   brainInputLabel: document.getElementById("brain-input-label"),
   brainInput: document.getElementById("brain-input"),
   brainSort: document.getElementById("brain-sort"),
+  brainSortLabel: document.getElementById("brain-sort-label"),
   brainInputView: document.getElementById("brain-input-view"),
+  brainStatus: document.getElementById("brain-status"),
+  brainStatusText: document.getElementById("brain-status-text"),
   brainResult: document.getElementById("brain-result"),
   brainGrid: document.getElementById("brain-grid"),
   brainFollowup: document.getElementById("brain-followup"),
@@ -817,7 +823,8 @@ function renderStaticContent() {
   elements.brainCopy.textContent = copy.brainCopy;
   elements.brainInputLabel.textContent = copy.brainInputLabel;
   elements.brainInput.placeholder = copy.brainPlaceholder;
-  elements.brainSort.textContent = copy.brainSort;
+  elements.brainSortLabel.textContent = copy.brainSort;
+  elements.brainStatusText.textContent = copy.brainSorting;
   elements.brainFollowup.textContent = copy.brainFollowup;
   elements.brainCta.textContent = copy.brainCta;
   elements.brainRestart.textContent = copy.brainRestart;
@@ -897,9 +904,11 @@ function renderStats() {
 
 function renderBrainDump() {
   const copy = texts[state.lang];
+  const isSorting = state.brainDumpMode === "sorting";
   const hasResult = state.brainDumpMode === "result" && state.brainDumpBuckets;
 
-  elements.brainInputView.hidden = hasResult;
+  elements.brainInputView.hidden = isSorting || hasResult;
+  elements.brainStatus.hidden = !isSorting;
   elements.brainResult.hidden = !hasResult;
 
   if (!hasResult) {
@@ -907,7 +916,7 @@ function renderBrainDump() {
     return;
   }
 
-  const categories = ["tasks", "ideas", "worries", "notes"];
+  const categories = ["thoughts", "tasks", "ideas", "worries"];
   const visibleCards = categories.filter((key) => state.brainDumpBuckets[key].length > 0);
 
   elements.brainGrid.innerHTML = visibleCards
@@ -1203,14 +1212,18 @@ function sortBrainDumpLines(lines) {
         return buckets;
       }
 
-      buckets.notes.push(line.trim());
+      buckets.thoughts.push(line.trim());
       return buckets;
     },
-    { tasks: [], ideas: [], worries: [], notes: [] },
+    { thoughts: [], tasks: [], ideas: [], worries: [] },
   );
 }
 
 function runBrainDump() {
+  if (state.brainDumpMode === "sorting") {
+    return;
+  }
+
   const lines = elements.brainInput.value
     .split("\n")
     .map((line) => line.trim())
@@ -1223,12 +1236,29 @@ function runBrainDump() {
     return;
   }
 
+  elements.brainSort.classList.add("is-firing");
+  window.setTimeout(() => elements.brainSort.classList.remove("is-firing"), 700);
+
+  if (state.brainDumpTimer) {
+    window.clearTimeout(state.brainDumpTimer);
+  }
+
   state.brainDumpBuckets = sortBrainDumpLines(lines);
-  state.brainDumpMode = "result";
+  state.brainDumpMode = "sorting";
   renderBrainDump();
+
+  state.brainDumpTimer = window.setTimeout(() => {
+    state.brainDumpMode = "result";
+    state.brainDumpTimer = null;
+    renderBrainDump();
+  }, 800);
 }
 
 function resetBrainDump() {
+  if (state.brainDumpTimer) {
+    window.clearTimeout(state.brainDumpTimer);
+    state.brainDumpTimer = null;
+  }
   state.brainDumpMode = "input";
   state.brainDumpBuckets = null;
   elements.brainInput.value = "";
@@ -1253,7 +1283,7 @@ function updateParallaxMode() {
 
   if (!parallaxEnabled) {
     parallaxNodes.forEach((node) => {
-      if (node.classList.contains("orb")) {
+      if (node.classList.contains("orb") || node.classList.contains("neural-line")) {
         node.style.setProperty("--parallax-offset", "0px");
       } else {
         node.style.transform = "translateY(0px)";
@@ -1278,7 +1308,7 @@ function requestParallaxFrame() {
       const factor = Number(node.dataset.parallax || 0);
       const offset = scrollY * factor * 0.25;
 
-      if (node.classList.contains("orb")) {
+      if (node.classList.contains("orb") || node.classList.contains("neural-line")) {
         node.style.setProperty("--parallax-offset", `${offset}px`);
       } else {
         node.style.transform = `translateY(${offset}px)`;
