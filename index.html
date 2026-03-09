@@ -85,14 +85,8 @@
             <div class="hero-energy-system" data-parallax="0.06">
               <span class="hero-energy-core"></span>
               <span class="hero-energy-halo"></span>
-              <span class="hero-energy-arc hero-energy-arc-a"></span>
-              <span class="hero-energy-arc hero-energy-arc-b"></span>
-              <span class="hero-energy-arc hero-energy-arc-c"></span>
-              <span class="hero-energy-arc hero-energy-arc-d"></span>
-              <span class="hero-energy-spark hero-energy-spark-a"></span>
-              <span class="hero-energy-spark hero-energy-spark-b"></span>
-              <span class="hero-energy-spark hero-energy-spark-c"></span>
-              <span class="hero-energy-spark hero-energy-spark-d"></span>
+              <span class="hero-energy-wash"></span>
+              <span class="hero-energy-sheen"></span>
             </div>
           </div>
 
@@ -182,50 +176,42 @@
 
         <section class="content-section reveal" id="brain-dump">
           <div class="section-heading section-heading-narrow">
-            <p class="section-kicker" id="brain-kicker">Micro-Tool</p>
+            <p class="section-kicker" id="brain-kicker">Produkt-Demo</p>
+            <h2 class="section-title" id="brain-title">Alles raus. neurOS sortiert den Rest.</h2>
+            <p class="section-copy" id="brain-copy">
+              Eine kurze Demo davon, wie neurOS aus mentalem Lärm eine klare nächste Sicht macht.
+            </p>
           </div>
 
-          <div class="tool-shell" aria-labelledby="brain-title">
-            <div class="brain-console-header">
-              <p class="brain-console-label" id="brain-console-label">Gedanken-Konsole</p>
-              <h2 class="brain-console-title" id="brain-title">Alles raus aus dem Kopf.</h2>
-              <p class="brain-console-copy" id="brain-copy">
-                Schreib ungefiltert auf, was gerade in deinem Kopf herumfliegt. neurOS bringt Ordnung rein.
-              </p>
+          <div class="tool-shell brain-demo-shell" aria-labelledby="brain-title">
+            <div class="brain-demo-stage" id="brain-demo-stage" data-state="chaos">
+              <div class="brain-chaos-view" id="brain-chaos-view">
+                <div class="brain-chaos-board" id="brain-chaos-board" aria-live="polite"></div>
+              </div>
+
+              <div class="brain-sort-state" id="brain-sort-state" hidden>
+                <div class="brain-sort-visual" aria-hidden="true">
+                  <span class="brain-sort-line brain-sort-line-a"></span>
+                  <span class="brain-sort-line brain-sort-line-b"></span>
+                  <span class="brain-sort-line brain-sort-line-c"></span>
+                </div>
+                <p class="brain-sort-text" id="brain-sort-text">neurOS bringt Ordnung rein.</p>
+              </div>
+
+              <div class="brain-clarity-view" id="brain-clarity-view" hidden>
+                <div class="brain-dump-grid" id="brain-grid" aria-live="polite"></div>
+                <p class="brain-result-summary" id="brain-followup">
+                  Du musst nicht alles sofort lösen. Nur das Nächste sehen.
+                </p>
+              </div>
             </div>
 
-            <div class="brain-dump-input-view" id="brain-input-view">
-              <label class="sr-only" for="brain-input" id="brain-input-label">
-                Was geht dir gerade durch den Kopf?
-              </label>
-              <textarea
-                class="field-input brain-dump-textarea brain-dump-console"
-                id="brain-input"
-                rows="8"
-                placeholder="Was geht dir gerade durch den Kopf?&#10;&#10;Schreib alles raus.&#10;Ein Gedanke pro Zeile."
-              ></textarea>
-              <button class="button button-primary brain-sort-button" type="button" id="brain-sort">
-                <span id="brain-sort-label">Gedanken sortieren</span>
+            <div class="hero-actions tool-actions brain-demo-actions">
+              <button class="button button-primary brain-demo-button" type="button" id="brain-demo-trigger">
+                <span id="brain-demo-trigger-label">Demo ansehen</span>
               </button>
-            </div>
-
-            <div class="brain-dump-status" id="brain-status" hidden>
-              <div class="brain-status-visual" aria-hidden="true">
-                <span class="brain-status-wave"></span>
-                <span class="brain-status-dot"></span>
-                <span class="brain-status-dot"></span>
-                <span class="brain-status-dot"></span>
-              </div>
-              <p class="brain-dump-status-text" id="brain-status-text">neurOS entwirrt dein Gedankenknäuel…</p>
-            </div>
-
-            <div class="brain-dump-result" id="brain-result" hidden>
-              <div class="brain-dump-grid" id="brain-grid" aria-live="polite"></div>
-              <p class="brain-result-summary" id="brain-followup">Okay. Das meiste ist nicht dringend. Fang mit 1 Sache an.</p>
-              <div class="hero-actions tool-actions">
-                <button class="text-link button-reset" type="button" id="brain-restart">Nochmal machen ↺</button>
-                <a class="text-link" href="#waitlist" id="brain-cta">Auf die Warteliste →</a>
-              </div>
+              <a class="text-link" href="#waitlist" id="brain-cta">Auf die Warteliste →</a>
+              <button class="text-link button-reset" type="button" id="brain-restart" hidden>Nochmal ansehen ↺</button>
             </div>
           </div>
         </section>

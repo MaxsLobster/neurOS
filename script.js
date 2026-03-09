@@ -67,30 +67,34 @@ const texts = {
     toolResultFollowup: "Willst du solche Tools täglich? neurOS baut genau das.",
     toolResultCta: "Auf die Warteliste →",
     toolRestart: "Nochmal machen ↺",
-    brainKicker: "Micro-Tool",
-    brainConsoleLabel: "Gedanken-Konsole",
-    brainTitle: "Alles raus aus dem Kopf.",
-    brainCopy:
-      "Schreib ungefiltert auf, was gerade in deinem Kopf herumfliegt. neurOS bringt Ordnung rein.",
-    brainInputLabel: "Was geht dir gerade durch den Kopf?",
-    brainPlaceholder:
-      "Zum Beispiel:\nIch weiß nicht womit ich anfangen soll\nich denke an 7 Sachen gleichzeitig\neigentlich müsste ich 2 Mails schreiben\nund ich habe noch diese eine Idee…",
-    brainSort: "Gedanken sortieren",
-    brainSorting: "neurOS entwirrt dein Gedankenknäuel…",
+    brainKicker: "Produkt-Demo",
+    brainTitle: "Alles raus. neurOS sortiert den Rest.",
+    brainCopy: "Eine kurze Demo davon, wie neurOS aus mentalem Lärm eine klare nächste Sicht macht.",
+    brainSorting: "neurOS bringt Ordnung rein.",
+    brainDemoTrigger: "Demo ansehen",
     brainCta: "Auf die Warteliste →",
-    brainRestart: "Nochmal machen ↺",
-    brainEmpty: "Schreib erst ein paar Gedanken auf. Eine Zeile reicht schon für den Anfang.",
+    brainRestart: "Nochmal ansehen ↺",
     brainCategories: {
-      now: "⚡ Jetzt wichtig",
-      later: "💡 Parken für später",
-      noise: "🌫️ Kopfrauschen",
+      now: "JETZT",
+      later: "SPÄTER",
+      noise: "KOPFRAUSCHEN",
     },
-    brainSummaries: {
-      focus_one: "Okay. Das meiste ist nicht dringend. Fang mit 1 Sache an.",
-      noise_first: "Gerade ist viel Lautstärke im Kopf. Mach es kleiner. Erst 1 ruhigen nächsten Schritt.",
-      parking_lot: "Da ist viel, aber nicht alles will heute Aufmerksamkeit. Parken ist auch Fortschritt.",
-      balanced: "Jetzt ist es klarer. Erst handeln, dann den Rest bewusst liegen lassen.",
+    brainChaosFragments: [
+      "Mail an Thomas",
+      "Kindergarten anrufen",
+      "3 offene Dinge im Büro",
+      "warum bin ich schon wieder zu spät",
+      "Idee für neurOS",
+      "Pflanzen gehen ein",
+      "ich bin müde",
+      "das darf ich nicht vergessen",
+    ],
+    brainClarity: {
+      now: ["Mail an Thomas", "Kindergarten anrufen", "3 offene Dinge im Büro"],
+      later: ["Idee für neurOS", "Pflanzen gehen ein", "das darf ich nicht vergessen"],
+      noise: ["warum bin ich schon wieder zu spät", "ich bin müde"],
     },
+    brainFollowup: "Du musst nicht alles sofort lösen. Nur das Nächste sehen.",
     appKicker: "Ein Blick in die App",
     appTitle: "So fühlt sich neurOS an.",
     appCopy: "Noch in Entwicklung. Aber schon nutzbar.",
@@ -351,30 +355,34 @@ const texts = {
     toolResultFollowup: "Want tools like this every day? That’s exactly what neurOS is building.",
     toolResultCta: "Join the waitlist →",
     toolRestart: "Try again ↺",
-    brainKicker: "Micro-Tool",
-    brainConsoleLabel: "Thought Console",
-    brainTitle: "Get everything out of your head.",
-    brainCopy:
-      "Write down, unfiltered, what is flying around in your head. neurOS brings some order into it.",
-    brainInputLabel: "What's going through your head right now?",
-    brainPlaceholder:
-      "For example:\nI don't know what to start with\nI'm thinking about 7 things at once\nI really need to write 2 emails\nand I still have that one idea…",
-    brainSort: "Sort thoughts",
-    brainSorting: "neurOS is untangling the noise in your head…",
+    brainKicker: "Product demo",
+    brainTitle: "Get it all out. neurOS sorts the rest.",
+    brainCopy: "A short demo of how neurOS turns mental noise into a clearer next view.",
+    brainSorting: "neurOS is bringing order into it.",
+    brainDemoTrigger: "Watch the demo",
     brainCta: "Join the waitlist →",
-    brainRestart: "Try again ↺",
-    brainEmpty: "Write down a few thoughts first. One line is enough to start.",
+    brainRestart: "Watch again ↺",
     brainCategories: {
-      now: "⚡ Now important",
-      later: "💡 Park for later",
-      noise: "🌫️ Head noise",
+      now: "NOW",
+      later: "LATER",
+      noise: "HEAD NOISE",
     },
-    brainSummaries: {
-      focus_one: "Okay. Most of this is not urgent. Start with one thing.",
-      noise_first: "There is a lot of noise in your head right now. Make it smaller. Find one calm next step.",
-      parking_lot: "There is a lot here, but not all of it needs you today. Parking things is progress too.",
-      balanced: "This is clearer now. Act on one thing, and let the rest stay parked on purpose.",
+    brainChaosFragments: [
+      "Email Thomas",
+      "Call kindergarten",
+      "3 open things at work",
+      "why am I late again",
+      "idea for neurOS",
+      "plants are dying",
+      "I'm tired",
+      "can't forget that",
+    ],
+    brainClarity: {
+      now: ["Email Thomas", "Call kindergarten", "3 open things at work"],
+      later: ["idea for neurOS", "plants are dying", "can't forget that"],
+      noise: ["why am I late again", "I'm tired"],
     },
+    brainFollowup: "You do not have to solve everything at once. Just see the next thing.",
     appKicker: "A look inside the app",
     appTitle: "This is what neurOS feels like.",
     appCopy: "Still in development. But already usable.",
@@ -618,30 +626,31 @@ const resultRules = [
   },
 ];
 
-const brainDumpMatchers = {
-  idea:
-    /\b(könnte|koennte|vielleicht|was wäre wenn|was waere wenn|idee|maybe|idea|what if|could)\b/i,
-  worry:
-    /\b(angst|sorge|stress|nervt|problem|worried|afraid|anxious|overwhelm|deadline)\b/i,
-  task:
-    /\b(muss|sollte|erledigen|machen|kaufen|anrufen|schreiben|fertig|termin|need to|should|must|do|call|buy|finish)\b/i,
-  startsWithVerb:
-    /^(anrufen|schreiben|machen|kaufen|erledigen|planen|zahlen|buchen|organisieren|sortieren|reply|send|call|buy|finish|book|pay|plan|organize|write|do)\b/i,
-};
+const brainFragmentLayout = [
+  { top: "10%", left: "7%", rotate: "-5deg" },
+  { top: "10%", left: "48%", rotate: "4deg" },
+  { top: "30%", left: "4%", rotate: "3deg" },
+  { top: "33%", left: "50%", rotate: "-4deg" },
+  { top: "53%", left: "14%", rotate: "-2deg" },
+  { top: "56%", left: "56%", rotate: "5deg" },
+  { top: "75%", left: "7%", rotate: "2deg" },
+  { top: "76%", left: "47%", rotate: "-3deg" },
+];
 
 const state = {
   lang: "de",
   stepIndex: -1,
   answers: {},
   statsAnimated: false,
-  brainDumpMode: "input",
-  brainDumpBuckets: null,
-  brainDumpTimer: null,
+  brainDemoState: "chaos",
+  brainDemoStarted: false,
+  brainDemoTimer: null,
   faqOpen: 0,
 };
 
 let revealObserver;
 let statsObserver;
+let brainDemoObserver;
 let parallaxNodes = [];
 let parallaxEnabled = false;
 let parallaxTicking = false;
@@ -678,21 +687,20 @@ const elements = {
   toolResultCta: document.getElementById("tool-result-cta"),
   toolRestart: document.getElementById("tool-restart"),
   brainKicker: document.getElementById("brain-kicker"),
-  brainConsoleLabel: document.getElementById("brain-console-label"),
   brainTitle: document.getElementById("brain-title"),
   brainCopy: document.getElementById("brain-copy"),
-  brainInputLabel: document.getElementById("brain-input-label"),
-  brainInput: document.getElementById("brain-input"),
-  brainSort: document.getElementById("brain-sort"),
-  brainSortLabel: document.getElementById("brain-sort-label"),
-  brainInputView: document.getElementById("brain-input-view"),
-  brainStatus: document.getElementById("brain-status"),
-  brainStatusText: document.getElementById("brain-status-text"),
-  brainResult: document.getElementById("brain-result"),
+  brainDemoStage: document.getElementById("brain-demo-stage"),
+  brainChaosView: document.getElementById("brain-chaos-view"),
+  brainChaosBoard: document.getElementById("brain-chaos-board"),
+  brainSortState: document.getElementById("brain-sort-state"),
+  brainSortText: document.getElementById("brain-sort-text"),
+  brainClarityView: document.getElementById("brain-clarity-view"),
   brainGrid: document.getElementById("brain-grid"),
   brainFollowup: document.getElementById("brain-followup"),
   brainCta: document.getElementById("brain-cta"),
   brainRestart: document.getElementById("brain-restart"),
+  brainDemoTrigger: document.getElementById("brain-demo-trigger"),
+  brainDemoTriggerLabel: document.getElementById("brain-demo-trigger-label"),
   appKicker: document.getElementById("app-kicker"),
   appTitle: document.getElementById("app-title"),
   appCopy: document.getElementById("app-copy"),
@@ -829,14 +837,11 @@ function renderStaticContent() {
   elements.toolResultCta.textContent = copy.toolResultCta;
   elements.toolRestart.textContent = copy.toolRestart;
   elements.brainKicker.textContent = copy.brainKicker;
-  elements.brainConsoleLabel.textContent = copy.brainConsoleLabel;
   elements.brainTitle.textContent = copy.brainTitle;
   elements.brainCopy.textContent = copy.brainCopy;
-  elements.brainInputLabel.textContent = copy.brainInputLabel;
-  elements.brainInput.placeholder = copy.brainPlaceholder;
-  elements.brainSortLabel.textContent = copy.brainSort;
-  elements.brainStatusText.textContent = copy.brainSorting;
-  elements.brainFollowup.textContent = getBrainSummary(copy);
+  elements.brainSortText.textContent = copy.brainSorting;
+  elements.brainDemoTriggerLabel.textContent = copy.brainDemoTrigger;
+  elements.brainFollowup.textContent = copy.brainFollowup;
   elements.brainCta.textContent = copy.brainCta;
   elements.brainRestart.textContent = copy.brainRestart;
   elements.appKicker.textContent = copy.appKicker;
@@ -915,27 +920,40 @@ function renderStats() {
 
 function renderBrainDump() {
   const copy = texts[state.lang];
-  const isSorting = state.brainDumpMode === "sorting";
-  const hasResult = state.brainDumpMode === "result" && state.brainDumpBuckets;
+  elements.brainDemoStage.dataset.state = state.brainDemoState;
+  elements.brainChaosView.hidden = state.brainDemoState !== "chaos";
+  elements.brainSortState.hidden = state.brainDemoState !== "sorting";
+  elements.brainClarityView.hidden = state.brainDemoState !== "clarity";
+  elements.brainDemoTrigger.hidden = state.brainDemoState === "sorting" || state.brainDemoState === "clarity";
+  elements.brainRestart.hidden = state.brainDemoState !== "clarity";
 
-  elements.brainInputView.hidden = isSorting || hasResult;
-  elements.brainStatus.hidden = !isSorting;
-  elements.brainResult.hidden = !hasResult;
+  elements.brainChaosBoard.innerHTML = copy.brainChaosFragments
+    .map((fragment, index) => {
+      const position = brainFragmentLayout[index] || brainFragmentLayout[brainFragmentLayout.length - 1];
+      return `
+        <span
+          class="brain-fragment"
+          style="--top:${position.top}; --left:${position.left}; --rotate:${position.rotate}"
+        >
+          ${fragment}
+        </span>
+      `;
+    })
+    .join("");
 
-  if (!hasResult) {
+  if (state.brainDemoState !== "clarity") {
     elements.brainGrid.innerHTML = "";
+    elements.brainFollowup.textContent = copy.brainFollowup;
     return;
   }
 
   const categories = ["now", "later", "noise"];
-  const visibleCards = categories.filter((key) => state.brainDumpBuckets[key].length > 0);
-
-  elements.brainGrid.innerHTML = visibleCards
+  elements.brainGrid.innerHTML = categories
     .map((key, index) => {
-      const items = state.brainDumpBuckets[key];
+      const items = copy.brainClarity[key];
       return `
         <article class="feature-card brain-dump-card${key === "now" ? " brain-dump-card-primary" : ""}" style="animation-delay:${index * 120}ms">
-          <h3 class="brain-dump-card-title">${copy.brainCategories[key]} (${items.length})</h3>
+          <h3 class="brain-dump-card-title">${copy.brainCategories[key]}</h3>
           <ul class="brain-dump-list">
             ${items.map((item) => `<li>${item}</li>`).join("")}
           </ul>
@@ -944,7 +962,7 @@ function renderBrainDump() {
     })
     .join("");
 
-  elements.brainFollowup.textContent = getBrainSummary(copy);
+  elements.brainFollowup.textContent = copy.brainFollowup;
 }
 
 function renderAppPreview() {
@@ -1201,111 +1219,75 @@ function formatAnimatedStat(value, format) {
   return String(Math.max(0, Math.round(value)));
 }
 
-function getBrainSummary(copy) {
-  if (!state.brainDumpBuckets) {
-    return copy.brainSummaries.focus_one;
-  }
-
-  const nowCount = state.brainDumpBuckets.now.length;
-  const laterCount = state.brainDumpBuckets.later.length;
-  const noiseCount = state.brainDumpBuckets.noise.length;
-
-  if (noiseCount >= nowCount + laterCount) {
-    return copy.brainSummaries.noise_first;
-  }
-
-  if (laterCount > nowCount && nowCount === 0) {
-    return copy.brainSummaries.parking_lot;
-  }
-
-  if (nowCount <= 1) {
-    return copy.brainSummaries.focus_one;
-  }
-
-  return copy.brainSummaries.balanced;
-}
-
-function sortBrainDumpLines(lines) {
-  return lines.reduce(
-    (buckets, line) => {
-      const normalized = line.trim().toLowerCase();
-
-      if (!normalized) {
-        return buckets;
-      }
-
-      if (brainDumpMatchers.startsWithVerb.test(normalized) || brainDumpMatchers.task.test(normalized)) {
-        buckets.now.push(line.trim());
-        return buckets;
-      }
-
-      if (brainDumpMatchers.worry.test(normalized)) {
-        buckets.noise.push(line.trim());
-        return buckets;
-      }
-
-      if (brainDumpMatchers.idea.test(normalized)) {
-        buckets.later.push(line.trim());
-        return buckets;
-      }
-
-      if (/(\?|ich weiß nicht|ich weiss nicht|too much|zu viel|gleichzeitig|overwhelmed?|chaos)/i.test(normalized)) {
-        buckets.noise.push(line.trim());
-        return buckets;
-      }
-
-      buckets.later.push(line.trim());
-      return buckets;
-    },
-    { now: [], later: [], noise: [] },
-  );
-}
-
-function runBrainDump() {
-  if (state.brainDumpMode === "sorting") {
+function startBrainDemo() {
+  if (state.brainDemoState === "sorting") {
     return;
   }
 
-  const lines = elements.brainInput.value
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (lines.length === 0) {
-    elements.brainInput.setCustomValidity(texts[state.lang].brainEmpty);
-    elements.brainInput.reportValidity();
-    window.setTimeout(() => elements.brainInput.setCustomValidity(""), 1000);
-    return;
+  if (state.brainDemoTimer) {
+    window.clearTimeout(state.brainDemoTimer);
   }
 
-  elements.brainSort.classList.add("is-firing");
-  window.setTimeout(() => elements.brainSort.classList.remove("is-firing"), 700);
+  state.brainDemoStarted = true;
 
-  if (state.brainDumpTimer) {
-    window.clearTimeout(state.brainDumpTimer);
-  }
-
-  state.brainDumpBuckets = sortBrainDumpLines(lines);
-  state.brainDumpMode = "sorting";
-  renderBrainDump();
-
-  state.brainDumpTimer = window.setTimeout(() => {
-    state.brainDumpMode = "result";
-    state.brainDumpTimer = null;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    state.brainDemoState = "clarity";
     renderBrainDump();
-  }, 1000);
+    return;
+  }
+
+  elements.brainDemoTrigger.classList.add("is-firing");
+  window.setTimeout(() => elements.brainDemoTrigger.classList.remove("is-firing"), 700);
+
+  state.brainDemoState = "sorting";
+  renderBrainDump();
+
+  state.brainDemoTimer = window.setTimeout(() => {
+    state.brainDemoState = "clarity";
+    state.brainDemoTimer = null;
+    renderBrainDump();
+  }, 900);
 }
 
-function resetBrainDump() {
-  if (state.brainDumpTimer) {
-    window.clearTimeout(state.brainDumpTimer);
-    state.brainDumpTimer = null;
+function replayBrainDemo() {
+  if (state.brainDemoTimer) {
+    window.clearTimeout(state.brainDemoTimer);
+    state.brainDemoTimer = null;
   }
-  state.brainDumpMode = "input";
-  state.brainDumpBuckets = null;
-  elements.brainInput.value = "";
+
+  state.brainDemoState = "chaos";
   renderBrainDump();
-  elements.brainInput.focus();
+
+  window.setTimeout(() => {
+    startBrainDemo();
+  }, 140);
+}
+
+function setupBrainDemoObserver() {
+  if (brainDemoObserver) {
+    brainDemoObserver.disconnect();
+  }
+
+  const section = document.getElementById("brain-dump");
+  if (!section) {
+    return;
+  }
+
+  brainDemoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || state.brainDemoStarted) {
+          return;
+        }
+
+        startBrainDemo();
+        brainDemoObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.45 },
+  );
+
+  brainDemoObserver.observe(section);
 }
 
 function toggleFaq(index) {
@@ -1437,9 +1419,8 @@ function setupEvents() {
 
   elements.toolStart.addEventListener("click", startFocusCheck);
   elements.toolRestart.addEventListener("click", restartFocusCheck);
-  elements.brainSort.addEventListener("click", runBrainDump);
-  elements.brainRestart.addEventListener("click", resetBrainDump);
-  elements.brainInput.addEventListener("input", () => elements.brainInput.setCustomValidity(""));
+  elements.brainDemoTrigger.addEventListener("click", startBrainDemo);
+  elements.brainRestart.addEventListener("click", replayBrainDemo);
 
   elements.faqList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-faq-index]");
@@ -1516,3 +1497,4 @@ setupRevealObserver();
 setupEvents();
 setupParallax();
 setLanguage(getInitialLanguage());
+setupBrainDemoObserver();
